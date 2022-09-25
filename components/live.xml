@@ -1,0 +1,58 @@
+<?xml version = "1.0" encoding = "utf-8" ?> 
+
+<component name = "Live" extends = "Scene" >
+
+  <script type = "text/brightscript" >
+
+    <![CDATA[
+
+    sub init()
+
+      m.qr = m.top.findNode("qr")
+
+      videocontent = createObject("RoSGNode", "ContentNode")
+
+      videocontent.title = "The Lot Radio"
+      videocontent.streamformat = "hls"
+      videocontent.url = "https://d3v5waav5zzoqq.cloudfront.net/hls/thelot/index.m3u8"
+
+      m.video = m.top.findNode("video")
+      m.video.content = videocontent
+
+      m.video.ObserveField("state", "OnVideoPlayerStateChange")
+     
+      m.video.setFocus(true)
+      m.video.control = "play"
+    end sub
+
+    sub OnVideoPlayerStateChange() ' invoked when video state is changed
+        state = m.video.state
+        if state = "paused" then
+          m.qr.visible = true
+        else
+          m.qr.visible = false
+        end if
+    end sub
+
+    ]]>
+
+  </script>
+
+  <children >
+
+
+  <Video id = "video">
+  <Poster
+  id="qr"
+  uri="pkg:/images/qr.png"
+  width="250" height="325"
+  translation="[500,100]"
+  visible="false"
+  />
+  </Video>
+
+
+
+  </children>
+
+</component>
